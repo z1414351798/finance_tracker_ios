@@ -8,6 +8,8 @@ struct ProfileView: View {
     @State private var selectedPhoto: PhotosPickerItem? = nil
     @State private var showPasswordSection = false
     @State private var showEmailSection = false
+    @State private var showDeleteConfirm = false
+    @State private var isDeletingAccount = false
 
     var body: some View {
         ScrollView {
@@ -203,7 +205,45 @@ struct ProfileView: View {
                     .cornerRadius(14)
                 }
                 .padding(.horizontal)
+
+                // Delete Account
+                Button(action: { showDeleteConfirm = true }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "trash.fill")
+                        Text("Delete Account")
+                            .fontWeight(.semibold)
+                        if isDeletingAccount {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: Color(red: 0.62, green: 0.07, blue: 0.24)))
+                                .scaleEffect(0.8)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color(red: 1.0, green: 0.94, blue: 0.95))
+                    .foregroundColor(Color(red: 0.62, green: 0.07, blue: 0.24))
+                    .cornerRadius(14)
+                }
+                .disabled(isDeletingAccount)
+                .padding(.horizontal)
                 .padding(.bottom, 20)
+                .alert("Delete Account?", isPresented: $showDeleteConfirm) {
+                    Button("Delete Forever", role: .destructive) {
+                        Task {
+                            isDeletingAccount = true
+                            do {
+                                try await APIClient.shared.deleteAccount()
+                                authViewModel.logout()
+                            } catch {
+                                viewModel.errorMessage = "Failed to delete account: \(error.localizedDescription)"
+                            }
+                            isDeletingAccount = false
+                        }
+                    }
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text("This will permanently delete your account, all transactions, categories, goals, and uploaded images. This cannot be undone.")
+                }
             }
         }
         .background(Color(.systemGroupedBackground))

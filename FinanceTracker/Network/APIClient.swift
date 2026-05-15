@@ -336,6 +336,14 @@ class APIClient {
         return body
     }
 
+    // MARK: - Account Deletion
+    func deleteAccount() async throws {
+        let url = try makeURL("/api/profile/account")
+        var req = URLRequest(url: url)
+        req.httpMethod = "DELETE"
+        try await executeVoid(req)
+    }
+
     // MARK: - Consent
     func recordConsent(platform: String = "ios", policyVersion: String = "2026-05") async {
         guard token != nil else { return }
