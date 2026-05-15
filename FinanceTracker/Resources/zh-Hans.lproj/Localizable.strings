@@ -1,0 +1,136 @@
+// Tabs
+"Dashboard" = "仪表板";
+"Record" = "记录";
+"History" = "历史";
+"Analytics" = "分析";
+"More" = "更多";
+"Calendar" = "日历";
+
+// Dashboard
+"Good Morning" = "早上好";
+"Good Afternoon" = "下午好";
+"Good Evening" = "晚上好";
+"Good Night" = "晚安";
+"Total Balance" = "总余额";
+"Total Income" = "总收入";
+"Total Expense" = "总支出";
+"You're in the green!" = "收支平衡！";
+"Recent Transactions" = "最近交易";
+"No transactions yet." = "暂无交易记录";
+"View All" = "查看全部";
+
+// Record
+"Add Record" = "添加记录";
+"EXPENSE" = "支出";
+"INCOME" = "收入";
+"Amount" = "金额";
+"Description" = "描述";
+"Note" = "备注";
+"Note (optional)" = "备注（可选）";
+"Date" = "日期";
+"Select Category" = "选择分类";
+"Add Category" = "添加分类";
+"Category Name" = "分类名称";
+"Add Photo" = "添加照片";
+"Save" = "保存";
+"Saving..." = "保存中...";
+"Cancel" = "取消";
+"Add" = "添加";
+"Category" = "分类";
+"Tap to attach photo" = "点击附加照片";
+"New Category" = "新分类";
+"Category added!" = "分类已添加！";
+"Saved!" = "已保存！";
+
+// History
+"Search transactions..." = "搜索交易...";
+"All" = "全部";
+"No transactions found" = "未找到交易记录";
+"Delete" = "删除";
+"Income" = "收入";
+"Expense" = "支出";
+
+// Analytics
+"Financial Analytics" = "财务分析";
+"Income vs Expense" = "收入与支出";
+"Spending by Category" = "按分类支出";
+"No data" = "暂无数据";
+"Expense Breakdown" = "支出明细";
+"Income Breakdown" = "收入明细";
+
+// Budget
+"Budget" = "预算";
+"Add Budget" = "添加预算";
+"Limit" = "限额";
+"Spent" = "已花费";
+"No budgets yet" = "暂无预算";
+"Over budget!" = "超出预算！";
+"Total Budgeted" = "总预算";
+"Total Spent" = "总花费";
+
+// Goals
+"Goals" = "目标";
+"Savings Goals" = "储蓄目标";
+"Add Goal" = "添加目标";
+"Target Amount" = "目标金额";
+"Saved" = "已存";
+"Add Contribution" = "添加存款";
+"Contribution Amount" = "存款金额";
+"Goal completed!" = "目标已完成！";
+"No goals yet" = "暂无目标";
+"Complete" = "完成";
+
+// Recurring
+"Recurring" = "定期交易";
+"Add Recurring" = "添加定期交易";
+"Frequency" = "频率";
+"Daily" = "每天";
+"Weekly" = "每周";
+"Monthly" = "每月";
+"Start Date" = "开始日期";
+"Next Run" = "下次执行";
+"Active" = "激活";
+"Inactive" = "未激活";
+"No recurring transactions" = "暂无定期交易";
+
+// Calendar
+"No transactions on this day" = "当天无交易记录";
+"Sun" = "日";
+"Mon" = "一";
+"Tue" = "二";
+"Wed" = "三";
+"Thu" = "四";
+"Fri" = "五";
+"Sat" = "六";
+
+// Profile
+"Profile" = "个人资料";
+"Change Email" = "修改邮箱";
+"Change Password" = "修改密码";
+"New Email" = "新邮箱";
+"Current Password" = "当前密码";
+"New Password" = "新密码";
+"Confirm New Password" = "确认新密码";
+"Update Email" = "更新邮箱";
+"Logout" = "退出登录";
+"Language" = "语言";
+"English" = "English";
+"Chinese" = "中文";
+
+// Auth
+"Welcome Back" = "欢迎回来";
+"Create Account" = "创建账户";
+"Username" = "用户名";
+"Password" = "密码";
+"Email" = "邮箱";
+"Sign In" = "登录";
+"Sign Up" = "注册";
+"Don't have an account?" = "没有账户？";
+"Already have an account?" = "已有账户？";
+"Login failed" = "登录失败";
+
+// Errors
+"Error" = "错误";
+"OK" = "确定";
+"Success" = "成功";
+"Loading..." = "加载中...";
