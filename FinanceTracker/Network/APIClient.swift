@@ -336,6 +336,22 @@ class APIClient {
         return body
     }
 
+    // MARK: - CSV Export
+    /// Downloads all transactions as CSV bytes. Throws on network/auth error.
+    func exportTransactionsCsv() async throws -> Data {
+        let url = try makeURL("/api/transactions/export/csv")
+        var req = URLRequest(url: url)
+        req.httpMethod = "GET"
+        if let token = token {
+            req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        return data
+    }
+
     // MARK: - Account Deletion
     func deleteAccount() async throws {
         let url = try makeURL("/api/profile/account")

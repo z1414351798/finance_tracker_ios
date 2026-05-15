@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HistoryView: View {
     @StateObject private var viewModel = HistoryViewModel()
+    @State private var csvShareItem: ShareableCSV? = nil
+    @State private var isExporting = false
 
     var body: some View {
         NavigationStack {
@@ -101,6 +103,31 @@ struct HistoryView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("History")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        Task {
+                            isExporting = true
+                            do {
+                                let data = try await APIClient.shared.exportTransactionsCsv()
+                                csvShareItem = ShareableCSV(data: data)
+                            } catch {
+                                viewModel.errorMessage = "Export failed: \(error.localizedDescription)"
+                            }
+                            isExporting = false
+                        }
+                    } label: {
+                        if isExporting {
+                            ProgressView().scaleEffect(0.8)
+                        } else {
+                            Label("Export", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                }
+            }
+            .sheet(item: $csvShareItem) { item in
+                ShareSheet(activityItems: [item.url])
+            }
             .task { await viewModel.load() }
             .refreshable { await viewModel.load() }
             .alert("Error", isPresented: Binding<Bool>(
@@ -113,6 +140,27 @@ struct HistoryView: View {
             }
         }
     }
+}
+
+// MARK: - Helpers
+
+struct ShareableCSV: Identifiable {
+    let id = UUID()
+    let data: Data
+    var url: URL {
+        let tmp = FileManager.default.temporaryDirectory
+            .appendingPathComponent("transactions_\(Date().timeIntervalSince1970).csv")
+        try? data.write(to: tmp)
+        return tmp
+    }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+    func updateUIViewController(_ uvc: UIActivityViewController, context: Context) {}
 }
 
 struct HistoryRowView: View {
