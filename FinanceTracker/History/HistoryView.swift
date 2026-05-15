@@ -165,20 +165,41 @@ struct ShareSheet: UIViewControllerRepresentable {
 
 struct HistoryRowView: View {
     let transaction: Transaction
+    @State private var flipped = false
+    @State private var degrees: Double = 0
 
     var isIncome: Bool { transaction.type == "INCOME" }
 
     var body: some View {
+        ZStack {
+            if degrees < 90 {
+                frontFace
+            } else {
+                backFace
+                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(minHeight: 80)
+        .rotation3DEffect(.degrees(degrees), axis: (x: 0, y: 1, z: 0))
+        .animation(.spring(response: 0.5, dampingFraction: 0.75), value: degrees)
+        .onTapGesture {
+            degrees = flipped ? 0 : 180
+            flipped.toggle()
+        }
+    }
+
+    // MARK: Front
+    var frontFace: some View {
         HStack(spacing: 14) {
             ZStack {
                 Circle()
                     .fill(isIncome ? Color.green.opacity(0.15) : Color.red.opacity(0.15))
                     .frame(width: 46, height: 46)
                 Image(systemName: isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                    .foregroundColor(isIncome ? .green : .rose)
+                    .foregroundColor(isIncome ? .green : Color(red: 0.93, green: 0.24, blue: 0.24))
                     .font(.title3)
             }
-
             VStack(alignment: .leading, spacing: 3) {
                 Text(transaction.text)
                     .font(.subheadline.bold())
@@ -187,57 +208,86 @@ struct HistoryRowView: View {
                     if let cat = transaction.category {
                         Text(cat)
                             .font(.caption)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
+                            .padding(.horizontal, 8).padding(.vertical, 2)
                             .background(Color.indigo.opacity(0.1))
                             .foregroundColor(.indigo)
                             .cornerRadius(8)
                     }
                     Text(transaction.date)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                if let note = transaction.note, !note.isEmpty {
-                    Text(note)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
+                        .font(.caption).foregroundColor(.secondary)
                 }
             }
-
             Spacer()
-
             VStack(alignment: .trailing, spacing: 4) {
-                Text((isIncome ? "+" : "-") + "$" + String(format: "%.2f", transaction.amount))
+                Text((isIncome ? "+" : "-") + "$" + String(format: "%.2f", abs(transaction.amount)))
                     .font(.subheadline.bold())
-                    .foregroundColor(isIncome ? .green : .rose)
+                    .foregroundColor(isIncome ? .green : Color(red: 0.93, green: 0.24, blue: 0.24))
+                Image(systemName: "arrow.left.and.right")
+                    .font(.caption2)
+                    .foregroundColor(.secondary.opacity(0.5))
+            }
+        }
+        .padding(14)
+        .background(Color(.systemBackground))
+        .cornerRadius(14)
+        .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+    }
 
+    // MARK: Back
+    var backFace: some View {
+        HStack(spacing: 14) {
+            // Receipt thumbnail or placeholder
+            Group {
                 if let urlStr = transaction.presignedImageUrl ?? transaction.imageUrl,
                    let url = URL(string: urlStr) {
                     AsyncImage(url: url) { phase in
                         switch phase {
                         case .success(let img):
-                            img.resizable()
-                                .scaledToFill()
-                                .frame(width: 36, height: 36)
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
-                        case .failure:
-                            Image(systemName: "photo")
-                                .foregroundColor(.secondary)
-                                .frame(width: 36, height: 36)
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 36, height: 36)
-                        @unknown default:
-                            EmptyView()
+                            img.resizable().scaledToFill()
+                                .frame(width: 56, height: 56)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.2)))
+                        default:
+                            receiptPlaceholder
                         }
                     }
+                } else {
+                    receiptPlaceholder
                 }
             }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("NOTE")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundColor(.white.opacity(0.45))
+                    .tracking(1.5)
+                Text(transaction.note?.isEmpty == false ? transaction.note! : "No note added")
+                    .font(.subheadline)
+                    .foregroundColor(transaction.note?.isEmpty == false ? .white : .white.opacity(0.35))
+                    .lineLimit(3)
+                    .italic(transaction.note?.isEmpty != false)
+            }
+            Spacer()
         }
-        .padding(12)
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.04), radius: 4, x: 0, y: 2)
+        .padding(14)
+        .background(
+            LinearGradient(
+                colors: [Color(red: 0.09, green: 0.12, blue: 0.20), Color(red: 0.05, green: 0.07, blue: 0.14)],
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            )
+        )
+        .cornerRadius(14)
+        .shadow(color: .black.opacity(0.18), radius: 8, x: 0, y: 4)
+    }
+
+    var receiptPlaceholder: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white.opacity(0.08))
+                .frame(width: 56, height: 56)
+            Image(systemName: "doc.text")
+                .foregroundColor(.white.opacity(0.25))
+                .font(.title3)
+        }
     }
 }
