@@ -21,6 +21,7 @@ class AuthViewModel: ObservableObject {
         do {
             let token = try await APIClient.shared.login(username: username, password: password)
             APIClient.shared.token = token
+            await APIClient.shared.recordConsent()
             isLoggedIn = true
         } catch {
             errorMessage = error.localizedDescription
@@ -40,6 +41,7 @@ class AuthViewModel: ObservableObject {
             // After signup, auto-login
             let token = try await APIClient.shared.login(username: username, password: password)
             APIClient.shared.token = token
+            await APIClient.shared.recordConsent()
             isLoggedIn = true
         } catch {
             errorMessage = error.localizedDescription

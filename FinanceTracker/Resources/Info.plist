@@ -22,6 +22,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to capture receipts and profile photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

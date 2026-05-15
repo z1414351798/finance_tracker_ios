@@ -335,4 +335,16 @@ class APIClient {
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
         return body
     }
+
+    // MARK: - Consent
+    func recordConsent(platform: String = "ios", policyVersion: String = "2026-05") async {
+        guard token != nil else { return }
+        guard let url = try? makeURL("/api/consent") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body: [String: String] = ["platform": platform, "policyVersion": policyVersion]
+        req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        try? await executeVoid(req)
+    }
 }

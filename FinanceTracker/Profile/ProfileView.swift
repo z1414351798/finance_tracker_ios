@@ -161,6 +161,34 @@ struct ProfileView: View {
                 .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
                 .padding(.horizontal)
 
+                // Privacy & Legal
+                VStack(spacing: 0) {
+                    NavigationLink(destination: PrivacyPolicyView()) {
+                        Label("Privacy Policy", systemImage: "hand.raised.fill")
+                            .foregroundColor(.primary)
+                    }
+                    .padding()
+                    .background(Color(.systemBackground))
+
+                    Divider()
+
+                    Link(destination: URL(string: "https://www.wisefintrakr.com/terms")!) {
+                        HStack {
+                            Label("Terms of Service", systemImage: "doc.text.fill")
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "arrow.up.right")
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                        }
+                        .padding()
+                        .background(Color(.systemBackground))
+                    }
+                }
+                .cornerRadius(16)
+                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
+                .padding(.horizontal)
+
                 // Logout
                 Button(action: { authViewModel.logout() }) {
                     HStack {
