@@ -214,14 +214,14 @@ struct ProfileView: View {
                             .fontWeight(.semibold)
                         if isDeletingAccount {
                             ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: Color(red: 0.62, green: 0.07, blue: 0.24)))
+                                .progressViewStyle(CircularProgressViewStyle(tint: .red))
                                 .scaleEffect(0.8)
                         }
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
-                    .background(Color(red: 1.0, green: 0.94, blue: 0.95))
-                    .foregroundColor(Color(red: 0.62, green: 0.07, blue: 0.24))
+                    .background(Color.red.opacity(0.1))
+                    .foregroundColor(.red)
                     .cornerRadius(14)
                 }
                 .disabled(isDeletingAccount)

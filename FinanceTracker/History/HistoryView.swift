@@ -197,7 +197,7 @@ struct HistoryRowView: View {
                     .fill(isIncome ? Color.green.opacity(0.15) : Color.red.opacity(0.15))
                     .frame(width: 46, height: 46)
                 Image(systemName: isIncome ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                    .foregroundColor(isIncome ? .green : Color(red: 0.93, green: 0.24, blue: 0.24))
+                    .foregroundColor(isIncome ? .green : Color.red)
                     .font(.title3)
             }
             VStack(alignment: .leading, spacing: 3) {
@@ -221,7 +221,7 @@ struct HistoryRowView: View {
             VStack(alignment: .trailing, spacing: 4) {
                 Text((isIncome ? "+" : "-") + "$" + String(format: "%.2f", abs(transaction.amount)))
                     .font(.subheadline.bold())
-                    .foregroundColor(isIncome ? .green : Color(red: 0.93, green: 0.24, blue: 0.24))
+                    .foregroundColor(isIncome ? .green : Color.red)
                 Image(systemName: "arrow.left.and.right")
                     .font(.caption2)
                     .foregroundColor(.secondary.opacity(0.5))
