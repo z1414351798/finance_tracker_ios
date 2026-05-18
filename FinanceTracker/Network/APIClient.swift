@@ -14,6 +14,12 @@ struct Transaction: Codable, Identifiable {
     var note: String?
     var imageUrl: String?
     var presignedImageUrl: String?
+
+    // Backend sends "imagePresignedUrl" but we expose it as "presignedImageUrl" in Swift
+    enum CodingKeys: String, CodingKey {
+        case id, text, amount, type, category, categoryId, date, note, imageUrl
+        case presignedImageUrl = "imagePresignedUrl"
+    }
 }
 
 struct Category: Codable, Identifiable {
